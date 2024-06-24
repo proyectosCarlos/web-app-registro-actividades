@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   database: "deWeb",
 });
 
-const baseUrl = process.env.VERCEL_URL;
+const baseUrl = process.env.port;
 
 const startServer = (options) => {
   const { port, public_path = "public" } = options;
@@ -33,9 +33,9 @@ const startServer = (options) => {
     res.sendFile(indexPath);
   });
 
-  app.listen(port, () => {
+  app.listen(process.env.VERCEL_URL, () => {
 
-    console.log(`puerto ${port}`)
+    console.log(`puerto ${process.env.VERCEL_URL}`)
   });
 
   //crud usuarios
