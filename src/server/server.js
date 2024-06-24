@@ -13,7 +13,27 @@ const connection = mysql.createConnection({
   database: "deWeb",
 });
 
-const baseUrl = process.env.port;
+function conectarDB() {
+  connection.connect(err => {
+    if (err) {
+      console.error('Error al conectar a la base de datos:', err);
+      return;
+    }
+    console.log('Conectado a la base de datos MySQL');
+  });
+}
+
+function desconectarDB() {
+  connection.end(err => {
+    if (err) {
+      console.error('Error al cerrar la conexión:', err);
+      return;
+    }
+    console.log('Conexión a la base de datos cerrada');
+  });
+}
+
+
 
 const startServer = (options) => {
   const { port, public_path = "public" } = options;
@@ -33,9 +53,8 @@ const startServer = (options) => {
     res.sendFile(indexPath);
   });
 
-  app.listen(process.env.VERCEL_URL, () => {
-
-    console.log(`puerto ${process.env.VERCEL_URL}`)
+  app.listen(port, () => {
+    console.log(`puerto ${port}`)
   });
 
   //crud usuarios
@@ -112,7 +131,7 @@ const startServer = (options) => {
               }else{
                 res
                 .status(200)
-                .send({estado:'error', message: `Error en la contraseña ${correo}`  }); 
+                .send({estado:'error', message: `Error en la contraseña ${correo}`  });
               }
              
           });
@@ -127,7 +146,7 @@ const startServer = (options) => {
 
 
 
-    app.get(`${baseUrl}/api/consultar/usuarios`, (req, res) => {  
+  app.get('/api/consultar/usuarios', (req, res) => {
     const sql = 'SELECT * FROM usuarios';
     connection.query(sql, (err, results) => {
       if (err) {
