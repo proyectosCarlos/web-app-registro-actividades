@@ -33,7 +33,10 @@ const startServer = (options) => {
     res.sendFile(indexPath);
   });
 
-  app.listen(port, () => {});
+  app.listen(port, () => {
+
+    console.log(`puerto ${port}`)
+  });
 
   //crud usuarios
 
